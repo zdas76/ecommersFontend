@@ -1,31 +1,46 @@
-import { Route, Routes } from "react-router";
-import App from "../App";
-import About from "../pages/page/About";
-import Contact from "../pages/page/Contact";
+import { createBrowserRouter } from "react-router";
 import RootLayout from "../component/Layout/RootLayout";
+import { App } from "antd";
+import DashLayout from "../component/Layout/DashLayout";
+import { routerGenerator } from "../Utiles/routerGenerator";
+import { adminPath } from "./Adminpath";
+import { customerPath } from "./CustomerPaht";
+import { vendorPath } from "./VendorPath";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
-import ProtectedRoute from "../component/Layout/ProtectedRoute";
-import DashLayout from "../component/Layout/DashLayout";
+import Contact from "../pages/page/Contact";
+import About from "../pages/page/About";
 
-export default function RouterItem() {
-  return (
-    <Routes>
-      <Route element={<RootLayout />}>
-        <Route index element={<App />} />
-        <Route path="home" element={<App />} />
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <App /> },
+      { path: "home", element: <App /> },
+      // { path: "booking", element: <Booking /> },
+      // { path: "payment", element: <PaymentPage /> },
+      { path: "aboutus", element: <About /> },
+      { path: "contact", element: <Contact /> },
+      { path: "login", element: <Login /> },
+      { path: "singup", element: <Register /> },
+      {
+        path: "dashboard",
+        element: <DashLayout />,
+        children: routerGenerator(adminPath),
+      },
+      {
+        path: "dashboard",
+        element: <DashLayout />,
+        children: routerGenerator(customerPath),
+      },
+      {
+        path: "dashboard",
+        element: <DashLayout />,
+        children: routerGenerator(vendorPath),
+      },
+    ],
+  },
+]);
 
-        <Route path="/dashboard" element={<DashLayout />}>
-          <ProtectedRoute role="ADMIN">
-            <Route path="about" element={<About />} />
-          </ProtectedRoute>
-
-        </Route>
-      </Route>
-    </Routes>
-  );
-}
+export default router;

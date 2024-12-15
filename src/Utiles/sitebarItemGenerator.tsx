@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+
+import { NavLink } from "react-router";
 import { TSideberItem, TUserPath } from "../types/sitebartypes";
 
 export const sidebarItemsGenerator = (items: TUserPath[]) => {
